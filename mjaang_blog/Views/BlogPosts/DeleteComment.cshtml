@@ -1,0 +1,44 @@
+﻿@model mjaang_blog.Models.Comment
+<div style="margin-top:220px"></div>
+<h2 style="text-align:center">Delete Comment</h2>
+
+<h4 style="text-align:center">Are you sure you want to delete this?</h4>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            Comment
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Body)
+        </dd>
+    </dl>
+</div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Details", new { slug = Model.Post.Slug })
+        </div>
+    }
+

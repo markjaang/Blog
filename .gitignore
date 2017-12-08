@@ -45,3 +45,16 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+client_id_google.json
+Migrations
+private.config
+Web.config
+App_Start
+bin
+Content
+css
+fonts
+img
+js
+obj
+Scripts

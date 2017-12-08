@@ -1,0 +1,123 @@
+﻿@model mjaang_blog.Models.BlogPost
+<div style="margin-top:220px"></div>
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 style="text-align:center">Details</h2>
+
+<div>
+    <h4 style="text-align:center">BlogPost</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @if (Model.Updated != null)
+            {
+                @Html.DisplayNameFor(model => model.Updated)
+            }
+        </dt>
+
+        <dd>
+            @if (Model.Updated != null)
+            {
+                @Html.DisplayFor(model => model.Updated)
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+            <br />
+            <br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Body)
+            <br />
+            <br />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MediaURL)
+        </dt>
+
+        <dd>
+            @if (Model.MediaURL != null)
+            {
+                <img class="img-responsive" src="@Url.Content(Model.MediaURL)" alt="" />
+            }
+        </dd>
+    </dl>
+</div>
+<br />
+<br />
+
+@using (Html.BeginForm("CreateComment", "BlogPosts", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="PostId" value="@Model.Id" />
+        <div class="form-group">
+            <label>Comment</label>
+            <input type="text" name="Body" class="form-control" required="required" placeholder="add a comment">
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+}
+
+@foreach (var com in Model.Comments)
+{
+   <p><i class="fa fa-comment"></i>  @com.Author.DisplayName:   @Html.Raw(com.Body)</p>   <p style="font-size:12px;color:#ccc">commented on @com.Created </p>
+
+    if (com.Updated != null)
+    {
+        <p style="font-size:12px;color:#ccc">edited on @com.Updated</p>
+    }
+
+    <p style="font-size:14px;color:#ccc">@Html.ActionLink("Edit Comment", "EditComment", new { id = com.Id })  |   @Html.ActionLink("Delete Comment", "DeleteComment", new { id = com.Id })</p>
+}
+        <br />
+        <br />
+        <br />
+        <br />
+
+
+
+        <p>
+            @Html.ActionLink("Edit Blog Post", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index") |
+            @Html.ActionLink("Log in", "Login", "Account", new { returnUrl = ViewBag.ReturnUrl },null)
+        </p>
+@section scripts{
+    <script type="text/javascript">
+        $(function(){
+            $('.hiddenCom').hide();
+
+            $('.edit').click(function(){
+                $(this).next('p').show();
+            })
+            $('.done').click(function(){
+                $(this).next('p').hide();
+            })
+        })
+    </script>
+
+    <script>
+        $('.timeago').timeago();
+    </script>
+    }

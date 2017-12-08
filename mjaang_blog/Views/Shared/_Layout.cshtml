@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blog-Mark Jaang</title>
+            @Styles.Render("~/Content/css")
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+        <link href="~/Content/webcss/font-awesome.css" rel="stylesheet" />
+        <link href="~/Content/webcss/font-awesome.min.css" rel="stylesheet" />
+        <link href="~/Content/webcss/animate.css" rel="stylesheet" />
+        <link href="~/Content/webcss/animate.min.css" rel="stylesheet" />
+        <link href="~/Content/webcss/style.css" rel="stylesheet" />
+        <link href="~/Content/webcss/normalize.css" rel="stylesheet" />
+        <link href="~/Content/webcss/normalize.min.css" rel="stylesheet" />
+        <link href="~/Content/webcss/dropdown.css" rel="stylesheet" />
+        <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <style>
+        ul.ui-autocomplete {
+                                z-index: 1100;
+                                background: rgba(255,0,0,0);
+                                border:none;
+                                position:fixed
+                            }
+        li.ui-menu-item:hover{
+            font-weight:900;
+            background: rgba(255,0,0,0);
+            border:none;
+        }
+
+    </style>
+        @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .searchbox{ width: 0%; padding: 0px; border:none; overflow:hidden;}
+    </style>
+    </head>
+    <body>
+        <header id="header">
+            <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="navbar-brand">
+                            <a href="index.html"><h1>Mark Jaang</h1></a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-collapse collapse">
+                        <div class="menu">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation"><a href="http://mjaangsite.azurewebsites.net/index.html">home</a></li>
+                                <li role="presentation"><a href="http://mjaangsite.azurewebsites.net/about.html">about me</a></li>
+                                <li role="presentation"><a href="http://mjaangsite.azurewebsites.net/index.html#portfolio">portfolio</a></li>
+                                <li role="presentation"><a href="http://mjaangsite.azurewebsites.net/resume.htm">resume</a></li>
+                                <li role="presentation">@Html.ActionLink("contact","Contact","Home")</li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Blog</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="@Url.Action("Index", "Home")">Welcome</a></li>
+                                        <li><a href="@Url.Action("Index", "BlogPosts")">Blog</a></li>
+                                        <li><a href="@Url.Action("Admin","BlogPosts")">Admin</a></li>
+                                        <li><a href="@Url.Action("Index","Manage")">Manage</a></li>
+                                        <li><div>@Html.Partial("_LoginPartial")</div></li>
+                                    </ul>
+
+
+                                </li>
+
+                                <li style="margin-left:50px">
+                                    <div style="text-align:right;font-size:16px">
+                                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                                        {
+                                            <p>Admin Mode</p>
+                                        }
+                                        else if (Request.IsAuthenticated && User.IsInRole("Moderator"))
+                                        {
+                                            <p>Moderator Mode</p>
+                                        }
+                                        else
+                                        {
+                                            <p></p>
+                                        }
+                                    </div>
+                                        @using (Html.BeginForm("Search", "BlogPosts",null,FormMethod.Post,new { id = "search-container" }))
+                                        {
+                                        @Html.AntiForgeryToken()
+                                        <div class="input-group search-bar" style="vertical-align:central">
+                                            <input type="text" id="query" name="query" placeholder="Search Blog" class="form-control searchbox" onfocus="this.value=''">
+                                                <button class="btn btn-default glyphicon glyphicon-search trigger" style="margin-top:0px;margin-bottom:0px;border-color:#65AAF0;float:right;height:34px" type="submit">
+                                                </button>
+
+                                        </div>
+                                        }
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--/.container-->
+            </nav><!--/nav-->
+        </header><!--/header-->
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+        </div>
+        <footer>
+            <div class="container">
+                <div class="social-icon">
+                    <div class="col-md-6">
+                        <div class="col-md-12 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                            <ul class="social-network">
+                                <li><a href="https://www.facebook.com/markjang" class="fb tool-tip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://twitter.com/markjaang" class="twitter tool-tip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://plus.google.com/103887909430193731372/about" class="gplus tool-tip" title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="https://www.linkedin.com/in/mark-jaang-93774a22?trk=hp-identity-name" class="linkedin tool-tip" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="https://www.youtube.com/user/markkaifer" class="ytube tool-tip" title="You Tube"><i class="fa fa-youtube-play"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+                    <h4 style="margin-left:40px">Contact</h4>
+                    <ul class="contact-info" style="list-style: none;">
+                        <li><i class="fa fa-home fa"></i>3 Ridgemore Court Greensboro NC 27407</li>
+                        <li><i class="fa fa-phone fa"></i>(336) 301-2686</li>
+                        <li><i class="fa fa-envelope fa"></i>markjang@yahoo.com</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+
+        <div class="sub-footer">
+            <div class="container">
+                <div class="col-md-6 col-md-offset-4" style="color:white">
+                    <div class="copyright">
+                        &copy; Mark Jaang 2016 All Rights Reserved.
+                    </div>
+                    <!--
+                        All links in the footer should remain intact.
+                        Licenseing information is available at: http://bootstraptaste.com/license/
+                        You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Day
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="modal in fade" id="myModal" style="background-color: white">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Modal header</h3>
+            </div>
+            <div class="modal-body">
+                <p>One fine body…</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn">Close</a>
+                <a href="#" class="btn btn-primary">Save changes</a>
+            </div>
+        </div>
+
+        <a class="btn" data-toggle="modal" href="#myModal">Launch Modal</a>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>  
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="~/Scripts/webTheme/wow.min.js"></script>
+        <script src="~/Scripts/webTheme/javascript_exercises.js"></script>
+        <script>
+            wow = new WOW(
+            {
+
+            })
+            .init();
+        </script>
+        <script>
+        $(document).ready(function () {
+            $('#query').autocomplete({
+                source:'@Url.Action("SearchAuto", "BlogPosts")'
+            })
+        });
+        
+
+        </script>
+        <script>
+            $('#triggerButton').click(function () {
+                $('#triggerButton').hide(callback);
+                callback: $('#query').slider('slow')
+            })
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#search-container .trigger').click(function () {
+                    // Hide the trigger image:
+                    $(this).prev().animate({ width: 0 }, 1000);
+                    // At the same time slide the div open
+                    $('.search-bar').animate({ width: 'toggle' }, 1000, function () {
+                        // This function/ code will be executed on complete:
+                        $(this).find('input')[0].focus(); // For bonus, the input will now get autofocus
+                    });
+                });
+            });
+        </script>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

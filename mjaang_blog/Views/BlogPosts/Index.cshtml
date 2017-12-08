@@ -1,0 +1,86 @@
+﻿@model IPagedList<mjaang_blog.Models.BlogPost>
+@using PagedList;
+@using PagedList.Mvc;
+<div style="margin-top:220px"></div>
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<br />
+<br />
+<h2 style="text-align:center">BLOG</h2>
+    <div>
+        <div>
+            <h1 class="page-header" style="text-align:center">
+                <small>My Project</small>
+            </h1>
+        </div>
+    </div>
+
+
+    @foreach (var blogPost in Model.Reverse())
+    {
+             <!-- First Blog Post -->
+        <h3><!--Below title is a slug link-->
+           <a href="@Url.Action("Details", new { slug = blogPost.Slug })">@blogPost.Title</a>
+        </h3>
+        <p class="lead posting">
+            by Mark
+        </p>
+                        <p class="posting"><span class="glyphicon glyphicon-time"></span> Posted on @blogPost.Created</p>
+
+        if (blogPost.Updated != null)
+        {
+            <p class="posting"><span class="glyphicon glyphicon-time"></span> Updated on @blogPost.Updated</p>
+        }
+    <hr>
+        <p>
+            <i class="fa fa-comment-o"></i>  @blogPost.Comments.Count Comments
+            
+        </p>
+    <hr>
+        <div style="max-height:250px;max-width:250px">
+            @if (blogPost.MediaURL != null)
+            {
+            <img class="img-responsive" src="@Url.Content(blogPost.MediaURL)" alt="" />
+            }
+            else
+            {
+                <p>No file has been uploaded</p>
+            }
+        </div>
+                        <hr>
+
+        <p>@Html.Raw(blogPost.BodyTrimmed)</p>
+                        <a class="btn btn-primary" href="@Url.Action("Details", new { slug = blogPost.Slug })">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <hr>
+    }
+    @if (ViewBag.Query != null)
+    {
+        <div>
+            <center>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount @Html.PagedListPager(Model,(page => Url.Action("Search", new { page, query=ViewBag.Query })))
+            </center>
+        </div>
+    }
+    else
+    {
+        <div>
+            <center>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </center>
+        </div>
+    }
+ 
+@section scripts{
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            var message = @ViewBag.Message;
+                if(message == 1)
+                {
+                    $('#myModal').modal('show');
+                }
+            });
+</script>
+
+    }
